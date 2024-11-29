@@ -1,0 +1,73 @@
+/* Footer Styling */
+footer {
+    background-color: #1a202c; /* Dark background */
+    color: white; /* White text */
+    text-align: center; /* Center aligned text */
+    padding: 20px 0; /* Padding on top and bottom */
+    border-radius: 40px 0px 40px 0px;
+}
+
+footer .container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+footer p {
+    margin: 0;
+    padding: 5px 0;
+}
+
+footer .font-bold {
+    font-weight: bold;
+}
+
+footer .text-lg {
+    font-size: 1.125rem;
+}
+
+footer .text-sm {
+    font-size: 0.875rem;
+}
+
+footer .text-xs {
+    font-size: 0.75rem;
+}
+
+footer .mb-2 {
+    margin-bottom: 0.5rem;
+}
+
+footer .mt-2 {
+    margin-top: 0.5rem;
+}
+
+
+/* Header Styling */
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header h1 {
+    font-size: 1.875rem; /* 30px */
+    font-weight: bold;
+}
+
+header a {
+    background-color: #4f46e5; /* Indigo background for button */
+    color: white;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+header a:hover {
+    background-color: #4338ca; /* Darker indigo on hover */
+    cursor: pointer;
+}
