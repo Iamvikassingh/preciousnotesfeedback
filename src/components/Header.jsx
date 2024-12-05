@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
     return (
-        <header className="top-0 sticky bg-gray-900 shadow-lg py-4 text-white">
+        <header className="top-0 sticky bg-gray-900 shadow-lg py-4 text-white" style={{zIndex:100}}>
             <div className="flex sm:flex-row flex-col sm:justify-between sm:items-center mx-auto px-4 container">
                 {/* Left Section: Logo and Project Name */}
                 <div className="flex items-center space-x-3 mb-4 sm:mb-0">
