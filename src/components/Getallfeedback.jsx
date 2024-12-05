@@ -7,6 +7,8 @@ import Footer from './Footer';
 const GetAllFeedback = () => {
     const apilinkforfeedback = import.meta.env.VITE_APILINK;
     const [feedbackData, setFeedbackData] = useState([]);
+    const [filteredFeedback, setFilteredFeedback] = useState([]);
+    const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true); // Manage loading state
 
     useEffect(() => {
@@ -14,6 +16,7 @@ const GetAllFeedback = () => {
             try {
                 const response = await axios.get(`${apilinkforfeedback}/api/detailfeedback`);
                 setFeedbackData(response.data);
+                setFilteredFeedback(response.data);
             } catch (error) {
                 console.error('Error fetching feedback data:', error);
             } finally {
@@ -23,6 +26,20 @@ const GetAllFeedback = () => {
 
         fetchFeedbackData();
     }, []);
+
+    // Handle search
+    const handleSearch = (e) => {
+        const query = e.target.value.toLowerCase();
+        setSearchQuery(query);
+
+        const filteredData = feedbackData.filter(feedback =>
+            Object.entries(feedback)
+                .filter(([key]) => key !== '_id' && key !== 'sno') // Exclude 'S.No' or non-searchable keys
+                .some(([key, value]) => value.toString().toLowerCase().includes(query))
+        );
+
+        setFilteredFeedback(filteredData);
+    };
 
     return (
         <>
@@ -36,8 +53,20 @@ const GetAllFeedback = () => {
                         </div>
                     </div>
                 )}
-                <div className={`relative bg-white shadow-lg p-8 rounded-lg w-full max-w-full ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
+                <div className="relative bg-white shadow-lg p-8 rounded-lg w-full max-w-full">
                     <h2 className="mb-6 font-bold text-4xl text-center text-gray-800">Feedback Data</h2>
+
+                    {/* Search Input */}
+                    <div className="flex justify-center mb-6">
+                        <i className="text-dark bi bi-search"></i>
+                        <input
+                            type="search"
+                            value={searchQuery}
+                            onChange={handleSearch}
+                            placeholder="Search feedback by name, course, user type, department, or suggestions..."
+                            className="border-gray-300 shadow-md px-4 py-2 border rounded-full focus:ring-2 focus:ring-indigo-400 w-full max-w-2xl focus:outline-none"
+                        />
+                    </div>
 
                     {/* Desktop/Tablet View: Table */}
                     <div className="lg:block hidden overflow-x-auto">
@@ -55,7 +84,7 @@ const GetAllFeedback = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {feedbackData.length > 0 ? feedbackData.map((feedback, index) => (
+                                {filteredFeedback.length > 0 ? filteredFeedback.map((feedback, index) => (
                                     <tr key={feedback._id} className="border-b">
                                         <td className="px-4 py-3">{index + 1}</td>
                                         <td className="px-4 py-3">{feedback.name}</td>
@@ -83,15 +112,15 @@ const GetAllFeedback = () => {
 
                     {/* Mobile View: Cards */}
                     <div className="block lg:hidden">
-                        {feedbackData.length > 0 ? feedbackData.map((feedback, index) => (
+                        {filteredFeedback.length > 0 ? filteredFeedback.map((feedback, index) => (
                             <div key={feedback._id} className="bg-gray-100 shadow-md mb-4 p-4 rounded-lg">
-                                <p><strong>S.No:</strong> {index + 1}</p>
-                                <p><strong>Name:</strong> {feedback.name}</p>
-                                <p><strong>Course:</strong> {feedback.course}</p>
-                                <p><strong>User Type:</strong> {feedback.userType}</p>
-                                <p><strong>Department:</strong> {feedback.department}</p>
-                                <p><strong>Phone:</strong> {feedback.phone}</p>
-                                <p>
+                                <p className='text-wrap'><strong>S.No:</strong> {index + 1}</p>
+                                <p className='text-wrap'><strong>Name:</strong> {feedback.name}</p>
+                                <p className='text-wrap'><strong>Course:</strong> {feedback.course}</p>
+                                <p className='text-wrap'><strong>User Type:</strong> {feedback.userType}</p>
+                                <p className='text-wrap'><strong>Department:</strong> {feedback.department}</p>
+                                <p className='text-wrap'><strong>Phone:</strong> {feedback.phone}</p>
+                                <p className='text-wrap'>
                                     <strong>Rating:</strong>
                                     <span className="flex">
                                         {[...Array(5)].map((_, i) => (
@@ -99,7 +128,7 @@ const GetAllFeedback = () => {
                                         ))}
                                     </span>
                                 </p>
-                                <p><strong>Suggestions:</strong> {feedback.suggestion}</p>
+                                <p className='text-wrap'><strong>Suggestions:</strong> {feedback.suggestion}</p>
                             </div>
                         )) : (
                             <p className="text-center text-gray-500">No feedback available</p>
