@@ -7,8 +7,8 @@ import Footer from './Footer';
 const GetAllFeedback = () => {
     const apilinkforfeedback = import.meta.env.VITE_APILINK;
     const [feedbackData, setFeedbackData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true); // Manage loading state
 
-    // Fetching all feedback data when the component is mounted
     useEffect(() => {
         const fetchFeedbackData = async () => {
             try {
@@ -16,6 +16,8 @@ const GetAllFeedback = () => {
                 setFeedbackData(response.data);
             } catch (error) {
                 console.error('Error fetching feedback data:', error);
+            } finally {
+                setIsLoading(false); // Stop loading once data is fetched
             }
         };
 
@@ -25,8 +27,16 @@ const GetAllFeedback = () => {
     return (
         <>
             <Header />
-            <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 p-6 min-h-screen">
-                <div className="bg-white shadow-lg p-8 rounded-lg w-full max-w-full">
+            <div className={`relative min-h-screen p-6 ${isLoading ? 'bg-gray-200' : 'bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500'}`}>
+                {isLoading && (
+                    <div className="z-10 absolute inset-0 flex justify-center items-center bg-black bg-opacity-50">
+                        <div className="flex flex-col items-center">
+                            <div className="border-white border-t-4 border-b-4 rounded-full w-16 h-16 animate-spin"></div>
+                            <p className="mt-4 text-lg text-white">Loading feedback...</p>
+                        </div>
+                    </div>
+                )}
+                <div className={`relative bg-white shadow-lg p-8 rounded-lg w-full max-w-full ${isLoading ? 'opacity-50' : 'opacity-100'}`}>
                     <h2 className="mb-6 font-bold text-4xl text-center text-gray-800">Feedback Data</h2>
 
                     {/* Desktop/Tablet View: Table */}

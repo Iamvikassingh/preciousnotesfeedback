@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 function Header() {
     return (
-        <header className="bg-gray-900 shadow-lg py-4 text-white">
+        <header className="top-0 sticky bg-gray-900 shadow-lg py-4 text-white">
             <div className="flex sm:flex-row flex-col sm:justify-between sm:items-center mx-auto px-4 container">
                 {/* Left Section: Logo and Project Name */}
                 <div className="flex items-center space-x-3 mb-4 sm:mb-0">
@@ -27,14 +27,22 @@ function Header() {
                     >
                         See Feedback
                     </Link>
-                    <a
-                        href="https://myportfoliobyvikassingh.netlify.app"
+                    <Link
+                        to="https://myportfoliobyvikassingh.netlify.app"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="bg-indigo-600 hover:bg-indigo-700 my-2 px-4 py-2 rounded-lg font-semibold text-sm sm:text-base transition duration-300"
                     >
                         View Portfolio
-                    </a>
+                    </Link>
+                    <Link
+                        to="https://preciousnotes.netlify.app"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-indigo-600 hover:bg-indigo-700 my-2 px-4 py-2 rounded-lg font-semibold text-sm sm:text-base transition duration-300"
+                    >
+                        PreciousNotes...
+                    </Link>
                 </div>
             </div>
         </header>

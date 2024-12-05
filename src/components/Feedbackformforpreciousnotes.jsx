@@ -21,6 +21,7 @@ function FeedbackFormForPreciousNotes() {
     });
 
     const [isSubmitted, setIsSubmitted] = useState(false); // State to manage form submission
+    const [isLoading, setIsLoading] = useState(false); // State to manage loading
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -29,6 +30,7 @@ function FeedbackFormForPreciousNotes() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setIsLoading(true); // Show loader
         try {
             const response = await axios.post(`${apilinkforfeedback}/api/feedback`, feedbackData);
 
@@ -43,6 +45,8 @@ function FeedbackFormForPreciousNotes() {
 
             // Show error message using React Toastify
             toast.error('Failed to submit feedback. Please try again.');
+        } finally {
+            setIsLoading(false); // Hide loader
         }
     };
 
@@ -63,6 +67,13 @@ function FeedbackFormForPreciousNotes() {
                         <p className="text-gray-200 text-lg">
                             Your feedback is valuable to us and helps us improve.
                         </p>
+                    </div>
+                ) : isLoading ? (
+                    <div className="text-center">
+                        {/* Loader */}
+                        <div className="border-white border-t-4 border-b-4 rounded-full w-16 h-16 animate-spin"></div>
+                        <br />
+                        <p className="mt-4 text-white">Submitting your feedback...</p>
                     </div>
                 ) : (
                     <form
