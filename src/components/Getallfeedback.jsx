@@ -109,7 +109,7 @@ const GetAllFeedback = () => {
                     <h2 className="mb-6 font-bold text-4xl text-center text-gray-800">Feedback Data</h2>
 
                     {/* Search Input */}
-                    <div className="flex justify-center mb-6">
+                    <div className="d-flex flex justify-center items-center gap-2 mb-6">
                         <i className="text-dark bi bi-search"></i>
                         <input
                             type="search"
