@@ -161,6 +161,29 @@ const GetAllFeedback = () => {
                             </tbody>
                         </table>
                     </div>
+
+                    {/* Mobile View: Card Layout */}
+                    <div className="gap-4 lg:hidden grid">
+                        {filteredFeedback.length > 0 ? (
+                            filteredFeedback.map((feedback, index) => (
+                                <div key={feedback._id} className="bg-gray-100 shadow-md p-4 rounded-lg">
+                                    <h3 className="mb-2 font-bold text-lg">{feedback.name}</h3>
+                                    <p><strong>Course:</strong> {feedback.course}</p>
+                                    <p><strong>User Type:</strong> {feedback.userType}</p>
+                                    <p><strong>Department:</strong> {feedback.department}</p>
+                                    <p><strong>Phone:</strong> {feedback.phone}</p>
+                                    <p><strong>Suggestions:</strong> {feedback.suggestion}</p>
+                                    <div className="flex mt-2">
+                                        {[...Array(5)].map((_, i) => (
+                                            <FaStar key={i} className={`text-xl ${i < feedback.rating ? 'text-yellow-400' : 'text-gray-300'}`} />
+                                        ))}
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            <p className="text-center text-gray-500">No feedback available</p>
+                        )}
+                    </div>
                 </div>
             </div>
             <Footer />
