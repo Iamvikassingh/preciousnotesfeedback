@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom'; // For navigation
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Header from './Header';
 import Footer from './Footer';
 
@@ -10,8 +13,14 @@ const GetAllFeedback = () => {
     const [filteredFeedback, setFilteredFeedback] = useState([]);
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true); // Manage loading state
+    const [isAuthenticated, setIsAuthenticated] = useState(false); // Authentication state
+    const [password, setPassword] = useState(''); // Store input password
+
+    const navigate = useNavigate(); // Hook to handle navigation
 
     useEffect(() => {
+        if (!isAuthenticated) return;
+
         const fetchFeedbackData = async () => {
             try {
                 const response = await axios.get(`${apilinkforfeedback}/api/detailfeedback`);
@@ -25,7 +34,7 @@ const GetAllFeedback = () => {
         };
 
         fetchFeedbackData();
-    }, []);
+    }, [isAuthenticated]);
 
     // Handle search
     const handleSearch = (e) => {
@@ -40,6 +49,49 @@ const GetAllFeedback = () => {
 
         setFilteredFeedback(filteredData);
     };
+
+    // Handle password authentication
+    const handleAuthentication = () => {
+        if (password === '9625') {
+            setIsAuthenticated(true);
+            toast.success('Authentication successful!', { position: 'top-right' });
+        } else {
+            toast.error('Incorrect password. Please try again.', { position: 'top-right' });
+        }
+    };
+
+    // Render the password form if not authenticated
+    if (!isAuthenticated) {
+        return (
+            <div className="flex justify-center items-center bg-gray-100 min-h-screen">
+                <div className="bg-white shadow-lg p-6 rounded-lg w-96">
+                    <h2 className="mb-4 font-bold text-2xl text-center text-gray-800">Enter Password</h2>
+                    <input
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        placeholder="Enter password"
+                        className="mb-4 px-4 py-2 border rounded-lg w-full focus:outline-none focus:ring-2 focus:ring-indigo-400"
+                    />
+                    <button
+                        onClick={handleAuthentication}
+                        className="bg-indigo-600 hover:bg-indigo-700 py-2 rounded-lg w-full text-white transition duration-200"
+                    >
+                        Authenticate
+                    </button>
+                    <center className='mt-4 btn-sm'>
+                        <Link
+                            to="/"
+                            className="bg-gray-600 hover:bg-gray-700 py-2 rounded-lg text-white transition duration-200 btn-sm"
+                        >
+                            <i className="bi-arrow-left-short bi"></i>back to home
+                        </Link>
+                    </center>
+                </div>
+                <ToastContainer />
+            </div>
+        );
+    }
 
     return (
         <>
@@ -108,31 +160,6 @@ const GetAllFeedback = () => {
                                 )}
                             </tbody>
                         </table>
-                    </div>
-
-                    {/* Mobile View: Cards */}
-                    <div className="block lg:hidden">
-                        {filteredFeedback.length > 0 ? filteredFeedback.map((feedback, index) => (
-                            <div key={feedback._id} className="bg-gray-100 shadow-md mb-4 p-4 rounded-lg">
-                                <p className='text-wrap'><strong>S.No:</strong> {index + 1}</p>
-                                <p className='text-wrap'><strong>Name:</strong> {feedback.name}</p>
-                                <p className='text-wrap'><strong>Course:</strong> {feedback.course}</p>
-                                <p className='text-wrap'><strong>User Type:</strong> {feedback.userType}</p>
-                                <p className='text-wrap'><strong>Department:</strong> {feedback.department}</p>
-                                <p className='text-wrap'><strong>Phone:</strong> {feedback.phone}</p>
-                                <p className='text-wrap'>
-                                    <strong>Rating:</strong>
-                                    <span className="flex">
-                                        {[...Array(5)].map((_, i) => (
-                                            <FaStar key={i} className={`text-xl ${i < feedback.rating ? 'text-yellow-400' : 'text-gray-300'}`} />
-                                        ))}
-                                    </span>
-                                </p>
-                                <p className='text-wrap'><strong>Suggestions:</strong> {feedback.suggestion}</p>
-                            </div>
-                        )) : (
-                            <p className="text-center text-gray-500">No feedback available</p>
-                        )}
                     </div>
                 </div>
             </div>
