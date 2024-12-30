@@ -72,7 +72,6 @@ function FeedbackFormForPreciousNotes() {
                     <div className="text-center">
                         {/* Loader */}
                         <div className="border-white border-t-4 border-b-4 rounded-full w-16 h-16 animate-spin"></div>
-                        <br />
                         <p className="mt-4 text-white">Submitting your feedback...</p>
                     </div>
                 ) : (
